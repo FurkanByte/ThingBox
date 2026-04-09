@@ -5,6 +5,9 @@ import { Sidebar } from '@/components/Sidebar'
 export const metadata: Metadata = {
   title: 'Lab & Atölye Envanteri',
   description: 'Premium Envanter Yönetim Sistemi',
+  icons: {
+    icon: '/logo.png',
+  },
 }
 
 export default function RootLayout({

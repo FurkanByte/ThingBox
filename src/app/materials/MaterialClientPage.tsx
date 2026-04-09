@@ -86,11 +86,11 @@ export function MaterialClientPage({ materials, categories, locations, projects 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
                       <input type="text" value={editName} onChange={e=>setEditName(e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none' }} disabled={loading} />
                       <input type="text" value={editDesc} onChange={e=>setEditDesc(e.target.value)} placeholder="Marka, model vs." style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none' }} disabled={loading} />
-                      <select value={editCatId} onChange={e=>setEditCatId(e.target.value)} disabled={loading} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none', background: 'white' }}>
+                      <select value={editCatId} onChange={e=>setEditCatId(e.target.value)} disabled={loading} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none', background: 'var(--surface)' }}>
                         <option value="">Kategori Seçiniz</option>
                         {renderOptions(categories)}
                       </select>
-                      <select value={editLocId} onChange={e=>setEditLocId(e.target.value)} disabled={loading} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none', background: 'white' }}>
+                      <select value={editLocId} onChange={e=>setEditLocId(e.target.value)} disabled={loading} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none', background: 'var(--surface)' }}>
                         <option value="">Ana Konum Seçiniz</option>
                         {renderOptions(locations)}
                       </select>

@@ -51,14 +51,14 @@ export function MaterialForm({ categories, locations }: { categories: any[], loc
       <div style={{ display: 'flex', gap: '12px' }}>
         <div style={{ flex: 1 }}>
           <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', fontWeight: 500 }}>Kategori</label>
-          <select value={categoryId} onChange={e => setCategoryId(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'white' }}>
+          <select value={categoryId} onChange={e => setCategoryId(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'var(--surface)' }}>
             <option value="">Seçiniz...</option>
             {renderOptions(categories)}
           </select>
         </div>
         <div style={{ flex: 1 }}>
           <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', fontWeight: 500 }}>Ana Konum</label>
-          <select value={defaultLocId} onChange={e => setDefaultLocId(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'white' }}>
+          <select value={defaultLocId} onChange={e => setDefaultLocId(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'var(--surface)' }}>
             <option value="">Seçiniz...</option>
             {renderOptions(locations)}
           </select>
