@@ -1,13 +1,14 @@
 import prisma from '@/lib/prisma'
 import { ProjectForm } from './ProjectForm'
+import { ProjectCard } from './ProjectCard'
 
 export const revalidate = 0
 
 export default async function ProjectsPage() {
   const projects = await prisma.project.findMany({
     include: {
-      _count: {
-        select: { stocks: true }
+      stocks: {
+        include: { material: true }
       }
     },
     orderBy: { createdAt: 'desc' }
@@ -27,18 +28,7 @@ export default async function ProjectsPage() {
           ) : (
             <div className="activity-list">
               {projects.map(proj => (
-                <div key={proj.id} className="activity-item">
-                  <div className="activity-dot" style={{ backgroundColor: proj.isActive ? 'var(--success)' : 'var(--text-muted)' }}></div>
-                  <div className="activity-content">
-                    <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{proj.name}</div>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>{proj.details || 'Açıklama yok.'}</div>
-                  </div>
-                  <div>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 500 }}>
-                      {proj._count.stocks} Adet Malzeme Atıflı
-                    </span>
-                  </div>
-                </div>
+                <ProjectCard key={proj.id} project={proj} />
               ))}
             </div>
           )}

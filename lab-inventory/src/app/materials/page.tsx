@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 import { MaterialForm } from './MaterialForm'
 import { UseMaterialForm } from './UseMaterialForm'
+import { AddStockForm } from './AddStockForm'
 
 export const revalidate = 0
 
@@ -50,7 +51,10 @@ export default async function MaterialsPage() {
                         {mat.defaultLoc && <span style={{ color: 'var(--text-muted)' }}>📍 Ana Konum: {mat.defaultLoc.name}</span>}
                       </div>
                       
-                      <UseMaterialForm materialId={mat.id} maxAvailable={inDepot} projects={projects} />
+                      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                        <UseMaterialForm materialId={mat.id} maxAvailable={inDepot} projects={projects} />
+                        <AddStockForm materialId={mat.id} />
+                      </div>
                       {mat.stocks.filter(s => s.status === 'KULLANIMDA').length > 0 && (
                         <div style={{ fontSize: '0.85rem', color: 'var(--text-main)', marginTop: '12px' }}>
                           <strong style={{ color: 'var(--warning)' }}>Sahada (Kullanımda):</strong>

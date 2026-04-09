@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
 import { LocationForm } from './LocationForm'
+import { LocationCard } from './LocationCard'
 
 export const revalidate = 0
 
@@ -27,12 +28,7 @@ export default async function LocationsPage() {
           ) : (
             <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
               {locations.map(loc => (
-                <div key={loc.id} className="stat-card" style={{ padding: '16px' }}>
-                  <div className="stat-title" style={{ color: 'var(--text-main)', fontSize: '1rem', textTransform: 'none' }}>{loc.name}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '8px' }}>
-                    {loc._count.fixtures} Demirbaş, {loc._count.materials} Ana Malzeme Noktası
-                  </div>
-                </div>
+                <LocationCard key={loc.id} loc={loc} />
               ))}
             </div>
           )}

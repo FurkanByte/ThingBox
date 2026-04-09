@@ -54,3 +54,24 @@ export async function useMaterial(materialId: string, quantity: number, projectI
   revalidatePath('/projects')
   revalidatePath('/')
 }
+
+export async function addStock(materialId: string, quantity: number) {
+  const existing = await prisma.materialStock.findFirst({
+    where: { materialId, status: 'DEPODA' }
+  })
+  if (existing) {
+    await prisma.materialStock.update({
+      where: { id: existing.id },
+      data: { quantity: existing.quantity + quantity }
+    })
+  } else {
+    await prisma.materialStock.create({
+      data: { materialId, quantity, status: 'DEPODA' }
+    })
+  }
+  await prisma.auditLog.create({
+    data: { action: 'STOCK_ADDED', targetId: materialId, targetType: 'MATERIAL', details: `${quantity} adet yeni stok depoya eklendi.` }
+  })
+  revalidatePath('/materials')
+  revalidatePath('/')
+}

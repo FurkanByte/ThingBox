@@ -64,7 +64,7 @@ export default async function DashboardPage() {
               <div key={log.id} className="activity-item">
                 <div className="activity-dot"></div>
                 <div className="activity-content">
-                  <div style={{ fontWeight: 500, color: '#f8fafc' }}>
+                  <div style={{ fontWeight: 500, color: 'var(--text-main)' }}>
                     {log.details || log.action}
                   </div>
                 </div>
