@@ -75,3 +75,24 @@ export async function addStock(materialId: string, quantity: number) {
   revalidatePath('/materials')
   revalidatePath('/')
 }
+
+export async function updateMaterial(id: string, name: string, description: string) {
+  await prisma.material.update({
+    where: { id },
+    data: { name, description }
+  })
+  
+  await prisma.auditLog.create({
+    data: {
+      action: 'MATERIAL_UPDATED',
+      targetId: id,
+      targetType: 'MATERIAL',
+      details: `${name} isimli sarf malzemesinin detayları güncellendi.`
+    }
+  })
+
+  revalidatePath('/materials')
+  revalidatePath('/')
+  revalidatePath('/projects')
+  revalidatePath('/locations')
+}

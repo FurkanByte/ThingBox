@@ -35,9 +35,12 @@ export function LocationCard({ loc }: { loc: any }) {
   return (
     <div className="stat-card" style={{ padding: '16px', position: 'relative' }}>
       <button onClick={() => setIsEditing(true)} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 500 }}>Düzenle</button>
-      <Link href={`/locations/${loc.id}`} className="stat-title" style={{ color: 'var(--primary)', fontSize: '1.1rem', textTransform: 'none', paddingRight: '40px', textDecoration: 'none', fontWeight: 700, display: 'inline-block' }}>
-        {loc.name} ↗
-      </Link>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+        <Link href={`/locations/${loc.id}`} className="stat-title" style={{ color: 'var(--primary)', fontSize: '1.1rem', textTransform: 'none', paddingRight: '4px', textDecoration: 'none', fontWeight: 700, display: 'inline-block' }}>
+          {loc.name} ↗
+        </Link>
+        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>#{loc.id.slice(-6).toUpperCase()}</span>
+      </div>
       <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '8px' }}>
         {loc._count.fixtures} Demirbaş, {loc._count.materials} Ana Malzeme Noktası
       </div>

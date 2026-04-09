@@ -28,7 +28,9 @@ export default async function FixturesPage() {
             <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
               {fixtures.map(fix => (
                 <div key={fix.id} className="stat-card" style={{ padding: '16px' }}>
-                  <div className="stat-title" style={{ color: 'var(--text-main)', fontSize: '1.05rem', textTransform: 'none' }}>{fix.name}</div>
+                  <div className="stat-title" style={{ color: 'var(--text-main)', fontSize: '1.05rem', textTransform: 'none' }}>
+                    {fix.name} <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>#{fix.id.slice(-6).toUpperCase()}</span>
+                  </div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>
                     {fix.description || 'Açıklama yok'}
                   </div>

@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { StockActionForm } from './StockActionForm'
 
 export const revalidate = 0
 
@@ -10,6 +11,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     where: { id },
     include: {
       stocks: {
+        where: { status: 'KULLANIMDA' },
         include: { material: true }
       }
     }
@@ -47,6 +49,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   <span style={{ fontSize: '1rem', color: 'var(--primary)', fontWeight: 600 }}>
                     {stock.quantity} Adet Atanmış / Kullanımda
                   </span>
+                  <StockActionForm stockId={stock.id} maxQuantity={stock.quantity} />
                 </div>
               </div>
             ))}

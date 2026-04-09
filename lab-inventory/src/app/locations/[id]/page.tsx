@@ -21,7 +21,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
       <div className="page-header" style={{ marginBottom: '24px' }}>
         <div>
           <Link href="/locations" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.85rem', display: 'inline-block', marginBottom: '8px' }}>← Konumlara Dön</Link>
-          <h1 className="page-title">{location.name} Paneli</h1>
+          <h1 className="page-title">{location.name} <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontWeight: 400 }}>#{location.id.slice(-6).toUpperCase()}</span></h1>
         </div>
       </div>
 
@@ -37,7 +37,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
                 <div key={fix.id} className="activity-item">
                   <div className="activity-dot" style={{ background: 'var(--warning)' }}></div>
                   <div className="activity-content">
-                    <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{fix.name}</div>
+                    <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{fix.name} <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>#{fix.id.slice(-6).toUpperCase()}</span></div>
                     <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{fix.description || 'Detay yok'}</div>
                   </div>
                 </div>
@@ -54,15 +54,15 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
           ) : (
             <div className="activity-list">
               {location.materials.map(mat => {
-                const totalStock = mat.stocks.reduce((acc, stock) => acc + stock.quantity, 0)
+                const totalStock = mat.stocks.filter(s => s.status !== 'TUKETILDI').reduce((acc, stock) => acc + stock.quantity, 0)
                 const inDepot = mat.stocks.filter(s => s.status === 'DEPODA').reduce((acc, s) => acc + s.quantity, 0)
 
                 return (
                   <div key={mat.id} className="activity-item">
                     <div className="activity-dot" style={{ background: 'var(--primary)' }}></div>
                     <div className="activity-content">
-                      <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{mat.name}</div>
-                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>Mevcut Depo: {inDepot} / Toplam: {totalStock}</div>
+                      <div style={{ fontWeight: 600, color: 'var(--text-main)' }}>{mat.name} <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>#{mat.id.slice(-6).toUpperCase()}</span></div>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>Mevcut Depo: {inDepot} / Toplam Aktif: {totalStock}</div>
                     </div>
                   </div>
                 )

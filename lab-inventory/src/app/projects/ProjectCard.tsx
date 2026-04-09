@@ -39,9 +39,12 @@ export function ProjectCard({ project }: { project: any }) {
       <button onClick={() => setIsEditing(true)} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 500 }}>Düzenle</button>
       <div className="activity-dot" style={{ backgroundColor: project.isActive ? 'var(--success)' : 'var(--text-muted)' }}></div>
       <div className="activity-content">
-        <Link href={`/projects/${project.id}`} style={{ fontWeight: 600, color: 'var(--primary)', textDecoration: 'none', fontSize: '1.2rem', display: 'inline-block', marginBottom: '4px' }}>
-          {project.name} ↗
-        </Link>
+        <div>
+          <Link href={`/projects/${project.id}`} style={{ fontWeight: 600, color: 'var(--primary)', textDecoration: 'none', fontSize: '1.2rem', display: 'inline-block', marginBottom: '4px' }}>
+            {project.name} ↗
+          </Link>
+          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginLeft: '8px' }}>#{project.id.slice(-6).toUpperCase()}</span>
+        </div>
         <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px', paddingRight: '50px' }}>{project.details || 'Açıklama yok.'}</div>
         
         {project.stocks && project.stocks.length > 0 && (
