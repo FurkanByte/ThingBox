@@ -1,7 +1,6 @@
 <div align="center">
   <br />
-  <img src="public/logo.png" alt="ThingBox Logo" width="80" style="border-radius: 16px; box-shadow: 0 4px 14px rgba(0,0,0,0.1);" />
-  <h1 style="margin-top: 16px;">ThingBox</h1>
+  <h1><img src="public/logo.png" alt="ThingBox Logo" width="56" align="center" style="border-radius: 12px; margin-right: 8px;" /> ThingBox</h1>
   <p><strong>A Modern, Web-Based Laboratory & Workshop Inventory Management System</strong></p>
   
   <br />
