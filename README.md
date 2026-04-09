@@ -4,7 +4,6 @@
   <p><strong>A Modern, Web-Based Laboratory & Workshop Inventory Management System</strong></p>
   
   <br />
-  <p>English</p>
 </div>
 
 <br />
