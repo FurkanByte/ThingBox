@@ -1,11 +1,12 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { renderOptions } from '@/lib/hierarchy'
 
 export function FixtureForm({ categories, locations }: { categories: any[], locations: any[] }) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [locationId, setLocationId] = useState(locations[0]?.id || '')
+  const [locationId, setLocationId] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -46,13 +47,14 @@ export function FixtureForm({ categories, locations }: { categories: any[], loca
           <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', fontWeight: 500 }}>Kategori</label>
           <select value={categoryId} onChange={e => setCategoryId(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'white' }}>
             <option value="">Seçiniz...</option>
-            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            {renderOptions(categories)}
           </select>
         </div>
         <div style={{ flex: 1 }}>
           <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', fontWeight: 500 }}>Bulunduğu Konum</label>
           <select value={locationId} onChange={e => setLocationId(e.target.value)} required style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'white' }}>
-            {locations.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+            <option value="">Seçiniz...</option>
+            {renderOptions(locations)}
           </select>
         </div>
       </div>

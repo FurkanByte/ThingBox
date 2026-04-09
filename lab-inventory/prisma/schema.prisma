@@ -20,8 +20,13 @@ model Category {
 model Location {
   id        String     @id @default(uuid())
   name      String     @unique
+  parentId  String?
+  parent    Location?  @relation("LocationHierarchy", fields: [parentId], references: [id])
+  children  Location[] @relation("LocationHierarchy")
   fixtures  Fixture[]
-  materials Material[] // varsayılan konum (Opsiyonel)
+  materials Material[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Project {

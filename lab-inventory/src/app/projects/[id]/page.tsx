@@ -33,7 +33,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       </div>
 
       <div className="activity-card" style={{ marginTop: 0 }}>
-        <h3>Projeye Tahsis Edilmiş Sarf Malzemeleri</h3>
+        <h3>Projeye Tahsis Edilmiş Malzemeler</h3>
         {project.stocks.length === 0 ? (
           <p style={{ color: 'var(--text-muted)' }}>Bu projeye tahsis edilmiş hiçbir malzeme bulunmuyor.</p>
         ) : (

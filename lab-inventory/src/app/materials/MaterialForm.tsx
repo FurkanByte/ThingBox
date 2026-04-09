@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { renderOptions } from '@/lib/hierarchy'
 
 export function MaterialForm({ categories, locations }: { categories: any[], locations: any[] }) {
   const [name, setName] = useState('')
@@ -52,14 +53,14 @@ export function MaterialForm({ categories, locations }: { categories: any[], loc
           <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', fontWeight: 500 }}>Kategori</label>
           <select value={categoryId} onChange={e => setCategoryId(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'white' }}>
             <option value="">Seçiniz...</option>
-            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            {renderOptions(categories)}
           </select>
         </div>
         <div style={{ flex: 1 }}>
           <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', fontWeight: 500 }}>Ana Konum</label>
           <select value={defaultLocId} onChange={e => setDefaultLocId(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'white' }}>
             <option value="">Seçiniz...</option>
-            {locations.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
+            {renderOptions(locations)}
           </select>
         </div>
       </div>

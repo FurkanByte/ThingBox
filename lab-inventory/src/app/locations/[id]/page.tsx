@@ -48,7 +48,7 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
 
         <div className="activity-card" style={{ flex: '1 1 400px', marginTop: 0 }}>
           <h3>Ana Deposu Olunan Malzemeler ({location.materials.length})</h3>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '16px' }}>Stoku bölünebilir, çekmeceler veya raflarda duran sarf malzemeler.</p>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '16px' }}>Stoku bölünebilir, çekmeceler veya raflarda duran malzemeler.</p>
           {location.materials.length === 0 ? (
             <p style={{ color: 'var(--text-muted)' }}>Bu alan ana depo olarak listelenmemiş.</p>
           ) : (

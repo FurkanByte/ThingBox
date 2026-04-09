@@ -76,10 +76,10 @@ export async function addStock(materialId: string, quantity: number) {
   revalidatePath('/')
 }
 
-export async function updateMaterial(id: string, name: string, description: string) {
+export async function updateMaterial(id: string, name: string, description: string, defaultLocId: string | null, categoryId: string | null) {
   await prisma.material.update({
     where: { id },
-    data: { name, description }
+    data: { name, description, defaultLocId: defaultLocId || null, categoryId: categoryId || null }
   })
   
   await prisma.auditLog.create({

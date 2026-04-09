@@ -4,6 +4,7 @@ import { MaterialForm } from './MaterialForm'
 import { UseMaterialForm } from './UseMaterialForm'
 import { AddStockForm } from './AddStockForm'
 import { updateMaterial } from './actions'
+import { renderOptions } from '@/lib/hierarchy'
 
 export function MaterialClientPage({ materials, categories, locations, projects }: { materials: any[], categories: any[], locations: any[], projects: any[] }) {
   const [search, setSearch] = useState('')
@@ -12,6 +13,8 @@ export function MaterialClientPage({ materials, categories, locations, projects 
   
   const [editName, setEditName] = useState('')
   const [editDesc, setEditDesc] = useState('')
+  const [editCatId, setEditCatId] = useState('')
+  const [editLocId, setEditLocId] = useState('')
   const [loading, setLoading] = useState(false)
 
   const filteredMaterials = materials.filter(m => 
@@ -24,12 +27,14 @@ export function MaterialClientPage({ materials, categories, locations, projects 
     setEditingId(mat.id)
     setEditName(mat.name)
     setEditDesc(mat.description || '')
+    setEditCatId(mat.categoryId || '')
+    setEditLocId(mat.defaultLocId || '')
   }
 
   const handleSave = async (id: string) => {
     setLoading(true)
     try {
-      await updateMaterial(id, editName, editDesc)
+      await updateMaterial(id, editName, editDesc, editLocId, editCatId)
       setEditingId(null)
     } catch(err) {
       alert('Güncellenirken hata oluştu.')
@@ -79,8 +84,16 @@ export function MaterialClientPage({ materials, categories, locations, projects 
 
                   {isEditing ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
-                      <input type="text" value={editName} onChange={e=>setEditName(e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none' }} />
-                      <input type="text" value={editDesc} onChange={e=>setEditDesc(e.target.value)} placeholder="Marka, model vs." style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none' }} />
+                      <input type="text" value={editName} onChange={e=>setEditName(e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none' }} disabled={loading} />
+                      <input type="text" value={editDesc} onChange={e=>setEditDesc(e.target.value)} placeholder="Marka, model vs." style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none' }} disabled={loading} />
+                      <select value={editCatId} onChange={e=>setEditCatId(e.target.value)} disabled={loading} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none', background: 'white' }}>
+                        <option value="">Kategori Seçiniz</option>
+                        {renderOptions(categories)}
+                      </select>
+                      <select value={editLocId} onChange={e=>setEditLocId(e.target.value)} disabled={loading} style={{ padding: '6px', borderRadius: '4px', border: '1px solid var(--primary)', outline: 'none', background: 'white' }}>
+                        <option value="">Ana Konum Seçiniz</option>
+                        {renderOptions(locations)}
+                      </select>
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <button onClick={() => handleSave(mat.id)} disabled={loading} style={{ background: 'var(--success)', padding: '6px 12px', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>Kaydet</button>
                         <button onClick={() => setEditingId(null)} disabled={loading} style={{ background: 'var(--text-muted)', padding: '6px 12px', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>İptal</button>

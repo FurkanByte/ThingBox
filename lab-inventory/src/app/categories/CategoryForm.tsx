@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { renderOptions } from '@/lib/hierarchy'
 
 export function CategoryForm({ categories }: { categories: any[] }) {
   const [name, setName] = useState('')
@@ -39,7 +40,7 @@ export function CategoryForm({ categories }: { categories: any[] }) {
         <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '8px', fontWeight: 500 }}>Bağlı Olduğu Ana Kategori (İsteğe Bağlı)</label>
         <select value={parentId} onChange={e => setParentId(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', outline: 'none', background: 'white' }} disabled={loading}>
           <option value="">(Sıfırdan Ana Kategori Oluştur)</option>
-          {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          {renderOptions(categories)}
         </select>
       </div>
       <button type="submit" className="btn-primary" disabled={loading} style={{ justifyContent: 'center' }}>

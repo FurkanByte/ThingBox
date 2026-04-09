@@ -19,14 +19,14 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name } = body
+    const { name, parentId } = body
 
     if (!name) {
       return NextResponse.json({ error: 'Konum adı zorunludur.' }, { status: 400 })
     }
 
     const newLocation = await prisma.location.create({
-      data: { name }
+      data: { name, parentId }
     })
 
     await prisma.auditLog.create({

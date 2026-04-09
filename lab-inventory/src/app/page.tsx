@@ -18,10 +18,6 @@ export default async function DashboardPage() {
     <div>
       <div className="page-header">
         <h1 className="page-title">Sistem Özeti</h1>
-        <Link href="/projects" className="btn-primary">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          Projeleri Yönet
-        </Link>
       </div>
 
       <div className="dashboard-grid">
@@ -37,7 +33,7 @@ export default async function DashboardPage() {
         
         <div className="stat-card">
           <div className="stat-header">
-            <span className="stat-title">Sarf Malzemesi Çeşidi</span>
+            <span className="stat-title">Malzeme Çeşidi</span>
             <div className="stat-icon">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
             </div>

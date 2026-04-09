@@ -17,7 +17,7 @@ export default async function MaterialsPage() {
   return (
     <div>
       <div className="page-header">
-        <h1 className="page-title">Sarf Malzemeleri Kataloğu</h1>
+        <h1 className="page-title">Malzemeler Kataloğu</h1>
       </div>
 
       <MaterialClientPage materials={materials} categories={categories} locations={locations} projects={projects} />

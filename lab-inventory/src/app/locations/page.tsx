@@ -7,12 +7,24 @@ export const revalidate = 0
 export default async function LocationsPage() {
   const locations = await prisma.location.findMany({
     include: {
+      parent: true,
       _count: {
         select: { fixtures: true, materials: true }
       }
     },
     orderBy: { name: 'asc' }
   })
+
+  const renderLocationTree = (parentId: string | null = null, depth = 0): React.ReactNode => {
+    return locations.filter(loc => (loc.parentId || null) === parentId).map(loc => (
+      <div key={loc.id} style={{ marginLeft: `${depth * 28}px`, borderLeft: depth > 0 ? '3px solid var(--border-color)' : 'none', paddingLeft: depth > 0 ? '16px' : '0', marginBottom: '12px', marginTop: depth === 0 ? '16px' : '8px' }}>
+        <LocationCard loc={loc} />
+        <div>
+          {renderLocationTree(loc.id, depth + 1)}
+        </div>
+      </div>
+    ))
+  }
 
   return (
     <div>
@@ -26,17 +38,15 @@ export default async function LocationsPage() {
           {locations.length === 0 ? (
             <p style={{ color: 'var(--text-muted)' }}>Henüz konum eklenmedi.</p>
           ) : (
-            <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
-              {locations.map(loc => (
-                <LocationCard key={loc.id} loc={loc} />
-              ))}
+            <div className="activity-list" style={{ gap: '0' }}>
+              {renderLocationTree(null, 0)}
             </div>
           )}
         </div>
 
         <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
           <h3>Yeni Konum Ekle</h3>
-          <LocationForm />
+          <LocationForm locations={locations} />
         </div>
       </div>
     </div>
