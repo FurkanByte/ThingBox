@@ -2,6 +2,8 @@
   <br />
   <img src="public/logo.png" alt="ThingBox Logo" width="128" style="border-radius: 24px; box-shadow: 0 4px 14px rgba(0,0,0,0.1);" />
   <h1>📦 ThingBox</h1>
+  <p><strong>A Modern, Web-Based Laboratory & Workshop Inventory Management System</strong></p>
+  
   <br />
 </div>
 
@@ -50,3 +52,5 @@ npm run dev
 Visit `http://localhost:3000` to start using your local ThingBox. Enjoy!
 
 ---
+
+<div id="tr"></div>
