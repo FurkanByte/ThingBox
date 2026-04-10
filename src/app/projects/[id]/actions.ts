@@ -1,8 +1,11 @@
 'use server'
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { getSession } from '@/lib/auth'
 
 export async function returnToDepot(stockId: string, quantity: number) {
+  const session = await getSession()
+  if (!session?.canDrawToProject && !session?.isAdmin) throw new Error('Bu işlem için yetkiniz yok.')
   const stock = await prisma.materialStock.findUnique({ where: { id: stockId } })
   if (!stock || stock.status !== 'KULLANIMDA' || stock.quantity < quantity) throw new Error('Geçersiz işlem.')
 
@@ -44,6 +47,8 @@ export async function returnToDepot(stockId: string, quantity: number) {
 }
 
 export async function consumeMaterial(stockId: string, quantity: number) {
+  const session = await getSession()
+  if (!session?.canConsume && !session?.isAdmin) throw new Error('Bu işlem için yetkiniz yok.')
   const stock = await prisma.materialStock.findUnique({ where: { id: stockId } })
   if (!stock || stock.status !== 'KULLANIMDA' || stock.quantity < quantity) throw new Error('Geçersiz işlem.')
 

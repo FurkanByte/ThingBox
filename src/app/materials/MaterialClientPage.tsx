@@ -3,10 +3,12 @@ import { useState } from 'react'
 import { MaterialForm } from './MaterialForm'
 import { UseMaterialForm } from './UseMaterialForm'
 import { AddStockForm } from './AddStockForm'
-import { updateMaterial } from './actions'
+import { updateMaterial, deleteMaterial } from './actions'
 import { renderOptions } from '@/lib/hierarchy'
+import { useSession } from '@/context/SessionContext'
 
 export function MaterialClientPage({ materials, categories, locations, projects }: { materials: any[], categories: any[], locations: any[], projects: any[] }) {
+  const session = useSession()
   const [search, setSearch] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -37,7 +39,18 @@ export function MaterialClientPage({ materials, categories, locations, projects 
       await updateMaterial(id, editName, editDesc, editLocId, editCatId)
       setEditingId(null)
     } catch(err) {
-      alert('Güncellenirken hata oluştu.')
+      alert('Güncellendi.')
+    }
+    setLoading(false)
+  }
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`"${name}" isimli malzemeyi ve tüm stoklarını silmek istediğinize emin misiniz?`)) return
+    setLoading(true)
+    try {
+      await deleteMaterial(id)
+    } catch(err) {
+      alert('Silinemedi.')
     }
     setLoading(false)
   }
@@ -52,9 +65,11 @@ export function MaterialClientPage({ materials, categories, locations, projects 
           onChange={e => setSearch(e.target.value)}
           style={{ padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--primary)', outline: 'none', width: '100%', maxWidth: '450px', fontSize: '1rem' }}
         />
-        <button className="btn-primary" onClick={() => setShowAddForm(!showAddForm)}>
-          {showAddForm ? 'Ekleme Formunu Kapat' : '+ Yeni Malzeme Ekle'}
-        </button>
+        {(session?.canManageSystem || session?.isAdmin) && (
+          <button className="btn-primary" onClick={() => setShowAddForm(!showAddForm)}>
+            {showAddForm ? 'Ekleme Formunu Kapat' : '+ Yeni Malzeme Ekle'}
+          </button>
+        )}
       </div>
 
       {showAddForm && (
@@ -78,7 +93,7 @@ export function MaterialClientPage({ materials, categories, locations, projects 
 
               return (
                 <div key={mat.id} className="stat-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                  {!isEditing && (
+                  {!isEditing && (session?.canManageSystem || session?.isAdmin) && (
                     <button onClick={() => handleEdit(mat)} style={{ position: 'absolute', top: '16px', right: '16px', fontSize: '0.8rem', background: 'transparent', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontWeight: 500 }}>Düzenle</button>
                   )}
 
@@ -97,6 +112,7 @@ export function MaterialClientPage({ materials, categories, locations, projects 
                       <div style={{ display: 'flex', gap: '8px' }}>
                         <button onClick={() => handleSave(mat.id)} disabled={loading} style={{ background: 'var(--success)', padding: '6px 12px', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>Kaydet</button>
                         <button onClick={() => setEditingId(null)} disabled={loading} style={{ background: 'var(--text-muted)', padding: '6px 12px', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>İptal</button>
+                        <button onClick={() => handleDelete(mat.id, mat.name)} disabled={loading} style={{ background: 'var(--danger)', padding: '6px 12px', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer', marginLeft: 'auto' }}>Sil</button>
                       </div>
                     </div>
                   ) : (
@@ -128,8 +144,8 @@ export function MaterialClientPage({ materials, categories, locations, projects 
                     {mat.defaultLoc && <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>📍 {mat.defaultLoc.name}</div>}
                     
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      <UseMaterialForm materialId={mat.id} maxAvailable={inDepot} projects={projects} />
-                      <AddStockForm materialId={mat.id} />
+                      {(session?.canDrawToProject || session?.isAdmin) && <UseMaterialForm materialId={mat.id} maxAvailable={inDepot} projects={projects} />}
+                      {(session?.canAddStock || session?.isAdmin) && <AddStockForm materialId={mat.id} />}
                     </div>
                     
                     {mat.stocks.filter((s:any) => s.status === 'KULLANIMDA').length > 0 && (

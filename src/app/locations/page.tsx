@@ -1,10 +1,13 @@
 import prisma from '@/lib/prisma'
 import { LocationForm } from './LocationForm'
 import { LocationCard } from './LocationCard'
+import { getSession } from '@/lib/auth'
 
 export const revalidate = 0
 
 export default async function LocationsPage() {
+  const session = await getSession()
+  const canManage = session?.isAdmin || session?.canManageSystem
   const locations = await prisma.location.findMany({
     include: {
       parent: true,
@@ -44,10 +47,12 @@ export default async function LocationsPage() {
           )}
         </div>
 
-        <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
-          <h3>Yeni Konum Ekle</h3>
-          <LocationForm locations={locations} />
-        </div>
+        {canManage && (
+          <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
+            <h3>Yeni Konum Ekle</h3>
+            <LocationForm locations={locations} />
+          </div>
+        )}
       </div>
     </div>
   )

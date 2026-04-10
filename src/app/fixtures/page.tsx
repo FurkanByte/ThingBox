@@ -1,10 +1,13 @@
 import prisma from '@/lib/prisma'
 import { FixtureForm } from './FixtureForm'
 import { FixtureCard } from './FixtureCard'
+import { getSession } from '@/lib/auth'
 
 export const revalidate = 0
 
 export default async function FixturesPage() {
+  const session = await getSession()
+  const canManage = session?.isAdmin || session?.canManageSystem
   const [fixtures, categories, locations] = await Promise.all([
     prisma.fixture.findMany({
       include: { location: true, category: true },
@@ -34,16 +37,18 @@ export default async function FixturesPage() {
           )}
         </div>
 
-        <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
-          <h3>Yeni Demirbaş Ekle</h3>
-          {locations.length > 0 ? (
-            <FixtureForm categories={categories} locations={locations} />
-          ) : (
-             <div style={{ padding: '16px', background: '#fffbeb', color: '#b45309', borderRadius: '8px', border: '1px solid #fde68a', fontSize: '0.9rem' }}>
-              Demirbaş ekleyebilmek için önce en az bir 'Konum' oluşturmalısınız. (Konumlar sekmesine gidin)
-            </div>
-          )}
-        </div>
+        {canManage && (
+          <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
+            <h3>Yeni Demirbaş Ekle</h3>
+            {locations.length > 0 ? (
+              <FixtureForm categories={categories} locations={locations} />
+            ) : (
+               <div style={{ padding: '16px', background: '#fffbeb', color: '#b45309', borderRadius: '8px', border: '1px solid #fde68a', fontSize: '0.9rem' }}>
+                Demirbaş ekleyebilmek için önce en az bir &apos;Konum&apos; oluşturmalısınız.
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

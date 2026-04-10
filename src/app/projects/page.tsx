@@ -1,10 +1,13 @@
 import prisma from '@/lib/prisma'
 import { ProjectForm } from './ProjectForm'
 import { ProjectCard } from './ProjectCard'
+import { getSession } from '@/lib/auth'
 
 export const revalidate = 0
 
 export default async function ProjectsPage() {
+  const session = await getSession()
+  const canManage = session?.isAdmin || session?.canManageSystem
   const projects = await prisma.project.findMany({
     include: {
       stocks: {
@@ -35,10 +38,12 @@ export default async function ProjectsPage() {
           )}
         </div>
 
-        <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
-          <h3>Yeni Proje Başlat</h3>
-          <ProjectForm />
-        </div>
+        {canManage && (
+          <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
+            <h3>Yeni Proje Başlat</h3>
+            <ProjectForm />
+          </div>
+        )}
       </div>
     </div>
   )

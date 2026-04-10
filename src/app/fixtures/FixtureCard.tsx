@@ -1,9 +1,12 @@
 'use client'
 import { useState } from 'react'
-import { updateFixture } from './actions'
+import { updateFixture, deleteFixture } from './actions'
 import { renderOptions } from '@/lib/hierarchy'
+import { useSession } from '@/context/SessionContext'
 
 export function FixtureCard({ fix, categories, locations }: { fix: any, categories: any[], locations: any[] }) {
+  const session = useSession()
+  const canManage = session?.isAdmin || session?.canManageSystem
   const [isEditing, setIsEditing] = useState(false)
   const [editName, setEditName] = useState(fix.name)
   const [editDesc, setEditDesc] = useState(fix.description || '')
@@ -18,14 +21,25 @@ export function FixtureCard({ fix, categories, locations }: { fix: any, categori
       await updateFixture(fix.id, editName, editDesc, editLocId, editCatId)
       setIsEditing(false)
     } catch(e) {
-      alert('Hatta oluştu')
+      alert('Hata oluştu')
+    }
+    setLoading(false)
+  }
+
+  const handleDelete = async () => {
+    if (!confirm(`"${fix.name}" isimli demirbaşı silmek istediğinize emin misiniz?`)) return
+    setLoading(true)
+    try {
+      await deleteFixture(fix.id)
+    } catch(e) {
+      alert('Silinemedi.')
     }
     setLoading(false)
   }
 
   return (
     <div className="stat-card" style={{ padding: '16px', position: 'relative' }}>
-      {!isEditing && (
+      {!isEditing && canManage && (
         <button onClick={() => setIsEditing(true)} style={{ position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 500 }}>Düzenle</button>
       )}
 
@@ -43,6 +57,7 @@ export function FixtureCard({ fix, categories, locations }: { fix: any, categori
           <div style={{ display: 'flex', gap: '8px' }}>
             <button onClick={handleSave} disabled={loading} style={{ background: 'var(--success)', padding: '6px 12px', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>Kaydet</button>
             <button onClick={() => setIsEditing(false)} disabled={loading} style={{ background: 'var(--text-muted)', padding: '6px 12px', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>İptal</button>
+            <button onClick={handleDelete} disabled={loading} style={{ background: 'var(--danger)', padding: '6px 12px', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer', marginLeft: 'auto' }}>Sil</button>
           </div>
         </div>
       ) : (

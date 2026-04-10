@@ -53,7 +53,10 @@ export default async function DashboardPage() {
       </div>
 
       <div className="activity-card">
-        <h3>Son Hareketler (Log)</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <h3 style={{ margin: 0 }}>Son Hareketler (Log)</h3>
+          <Link href="/logs" style={{ fontSize: '0.85rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>Tüm Geçmişi Görüntüle →</Link>
+        </div>
         {recentLogs.length > 0 ? (
           <div className="activity-list">
             {recentLogs.map(log => (

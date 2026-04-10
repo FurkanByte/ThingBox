@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Sidebar } from '@/components/Sidebar'
+import { getSession } from '@/lib/auth'
+import { SessionProvider } from '@/context/SessionContext'
 
 export const metadata: Metadata = {
   title: 'Lab & Atölye Envanteri',
@@ -10,21 +12,25 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getSession()
+
   return (
     <html lang="tr">
       <body>
-        <div className="app-container">
-          <Sidebar />
-          
-          <main className="main-content">
-            {children}
-          </main>
-        </div>
+        <SessionProvider session={session}>
+          <div className="app-container">
+            {session && <Sidebar session={session} />}
+            
+            <main className="main-content" style={{ padding: session ? '40px 56px' : '0' }}>
+              {children}
+            </main>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   )

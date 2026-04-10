@@ -1,9 +1,12 @@
 import prisma from '@/lib/prisma'
 import { CategoryForm } from './CategoryForm'
+import { getSession } from '@/lib/auth'
 
 export const revalidate = 0
 
 export default async function CategoriesPage() {
+  const session = await getSession()
+  const canManage = session?.isAdmin || session?.canManageSystem
   const categories = await prisma.category.findMany({
     include: {
       parent: true,
@@ -52,10 +55,12 @@ export default async function CategoriesPage() {
           )}
         </div>
 
-        <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
-          <h3>Kategori Ekle</h3>
-          <CategoryForm categories={categories} />
-        </div>
+        {canManage && (
+          <div className="activity-card" style={{ flex: '1 1 350px', maxWidth: '400px', marginTop: 0 }}>
+            <h3>Kategori Ekle</h3>
+            <CategoryForm categories={categories} />
+          </div>
+        )}
       </div>
     </div>
   )

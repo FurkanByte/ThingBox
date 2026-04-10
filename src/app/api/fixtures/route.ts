@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { getSession } from '@/lib/auth'
 
 export async function GET() {
   try {
@@ -14,6 +15,10 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const session = await getSession()
+    if (!session?.canManageSystem && !session?.isAdmin) {
+      return NextResponse.json({ error: 'Yetkiniz yok.' }, { status: 403 })
+    }
     const body = await request.json()
     const { name, description, locationId, categoryId } = body
 
