@@ -4,7 +4,7 @@ import { decrypt } from '@/lib/auth'
 
 const publicRoutes = ['/login', '/logo.png']
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   
   // İmage, public klasör ve next iç dosyalarını bypass et
