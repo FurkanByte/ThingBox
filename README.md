@@ -41,8 +41,16 @@ npm install
 3. Database Setup (SQLite by default)
 ```bash
 npx prisma generate
-npx prisma db push
+npx prisma migrate deploy
 ```
+
+> ⚠️ **Önemli:** Şema değişikliği yaparken `prisma db push` **kullanmayın**. Bu komut veriyi kaybettirebilir.
+> Bunun yerine her zaman:
+> ```bash
+> npx prisma migrate dev --name "değişiklik_adı"
+> # veya kısaca:
+> npm run db:migrate -- --name "değişiklik_adı"
+> ```
 
 4. Start the Application
 ```bash
